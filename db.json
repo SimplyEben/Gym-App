@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": "dc53",
+      "firstname": "Kwame ",
+      "lastname": "Bafoe",
+      "phone": "9090",
+      "email": "baffoe@gmail.com",
+      "subscriptionDate": "2024-07-03"
+    },
+    {
+      "id": "d13e",
+      "firstname": "Kwame",
+      "lastname": "Sarfo",
+      "phone": "87644",
+      "email": "kwame@gmail.com",
+      "subscriptionDate": "2024-09-01"
+    }
+  ]
+}

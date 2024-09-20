@@ -1,0 +1,22 @@
+{
+  "admins": [
+    {
+      "id": "681d",
+      "firstname": "Sam",
+      "lastname": "Sarfo",
+      "email": "sarfo@gmail.com"
+    },
+    {
+      "id": "6ff9",
+      "firstname": "george",
+      "lastname": "Home",
+      "email": "home@gmail.com"
+    },
+    {
+      "id": "c214",
+      "firstname": "Kom",
+      "lastname": "Gab",
+      "email": "gab@gmail.com"
+    }
+  ]
+}
