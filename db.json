@@ -1,20 +1,50 @@
 {
   "users": [
     {
-      "id": "dc53",
-      "firstname": "Kwame ",
-      "lastname": "Bafoe",
-      "phone": "9090",
-      "email": "baffoe@gmail.com",
-      "subscriptionDate": "2024-07-03"
+      "id": "e620",
+      "name": "Kofi",
+      "address": "GP-234-4527",
+      "purpose": "Personal Achievement",
+      "number": "",
+      "medicalCondition": "Diabetic",
+      "subscriptionDate": "2024-04-15",
+      "phone": "03487943"
     },
     {
-      "id": "d13e",
-      "firstname": "Kwame",
-      "lastname": "Sarfo",
-      "phone": "87644",
-      "email": "kwame@gmail.com",
-      "subscriptionDate": "2024-09-01"
+      "id": "ac0d",
+      "name": "Kwawo Oppong",
+      "address": "GB-234-5638",
+      "purpose": "Enhanced Mental Health",
+      "phone": "7658669087",
+      "medicalCondition": "None",
+      "subscriptionDate": "2024-10-15"
+    },
+    {
+      "id": "8058",
+      "name": "Kwame Doku",
+      "address": "Fadama ",
+      "purpose": "Improved Physical Health",
+      "phone": "6768987987",
+      "medicalCondition": "None",
+      "subscriptionDate": "2024-10-03"
+    },
+    {
+      "id": "7e91",
+      "name": "Kojo",
+      "address": "AF-123-5764",
+      "purpose": "Personal Achievement",
+      "phone": "5787698",
+      "medicalCondition": "None",
+      "subscriptionDate": "2024-09-26"
+    },
+    {
+      "id": "1daa",
+      "name": "Sam",
+      "address": "GP-234-4527",
+      "purpose": "Increase In Muscle Mass",
+      "phone": "034879444",
+      "medicalCondition": "None",
+      "subscriptionDate": "2024-09-04"
     }
   ]
 }

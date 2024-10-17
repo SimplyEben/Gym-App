@@ -1,91 +1,16 @@
 import { useState } from "react";
-// import { Link } from 'react-router-dom';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { users} from './UserList';
-//  import axios from "axios";
 
 function AddUser() {
-
-  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    name: "",
+    address: "",
+    purpose: "",
     phone: "",
-    email: "",
+    medicalCondition: "",
     subscriptionDate: "",
   });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("first",users)
-  //   users.push(formData);
-  //   console.log("second",users);
-  //   // addUser(formData);
-  //   // setFormData({
-  //   //   firstname: "",
-  //   //   lastname: "",
-  //   //   phone: "",
-  //   //   email: "",
-  //   //   subscriptionDate: "",
-  //   // });
-
-  // };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify(formData);
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:8899/users", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("User added:", result);
-        // On successful submission, update the users array
-        setUsers([...users, result]);
-        // Clear the form fields after submission
-        setFormData({
-          firstname: "",
-          lastname: "",
-          phone: "",
-          email: "",
-          subscriptionDate: "",
-        });
-      })
-      .catch((error) => console.error("Error adding user:", error));
-  // axios
-      //  .post("http://localhost:8899/users/posts")
-      //  .then((response) => response.json())
-  //      .then((response) => {
-  //       console.log("User added:", response);
-  //      // On successful submission, update the users array
-  //      setUsers([...users, response]);
-  //      // Clear the form fields after submission
-  //       setFormData({
-  //         firstname: "",
-  //        lastname: "",
-  //        phone: "",
-  //        email: "",
-  //         subscriptionDate: "",
-  //      })
-  //      .catch((err) => console.log(err));
-  //  });
-  };
 
   const navigate = useNavigate();
 
@@ -93,77 +18,126 @@ function AddUser() {
     navigate("/home-page/user-list");
   };
 
+  const handleInputChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    axios
+      .post("http://localhost:8899/users", formData)
+      .then((response) => {
+        console.log("User added:", response.data);
+        setFormData({
+          name: "",
+          address: "",
+          purpose: "",
+          phone: "",
+          medicalCondition: "",
+          subscriptionDate: "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding user:", error);
+      });
+  };
+
   return (
-    <div className="max-w-80 mx-auto p-4 mt-10 bg-white shadow-md rounded-lg">
-      {/* <h1 className="text-2xl font-semibold text-black mb-4">Add User</h1> */}
+    <div className="w-full max-w-md mx-auto my-5 p-4 bg-white shadow-md rounded-lg sm:max-w-lg md:max-w-xs lg:max-w-xs">
+      <h1 className="text-2xl font-semibold text-black mb-4">Add New User</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-black">Firstname:</label>
           <input
             type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={handleChange}
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Name"
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
             required
-            className="w-full bg-custom-light-gray text-black p-2 border rounded"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black">Lastname:</label>
           <input
             type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={handleChange}
+            name="address"
+            value={formData.address}
+            onChange={handleInputChange}
+            placeholder="Address"
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
             required
-            className="w-full bg-custom-light-gray text-black p-2 border rounded"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black">Phone:</label>
+          <select
+            name="purpose"
+            value={formData.purpose}
+            onChange={handleInputChange}
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
+            required
+          >
+            <option value="" disabled>
+              Select Purpose
+            </option>
+            <option value="Improved Physical Health">
+              Improve Physical Health
+            </option>
+            <option value="Increase In Muscle Mass">
+              Increase In Muscle Mass
+            </option>
+            <option value="Increase In Strength">Increase In Strength</option>
+            <option value="Gain Weight">Gain Weight</option>
+            <option value="Reduce Fat/ Loose Weight">
+              Reduce Fat/ Loose Weight
+            </option>
+          </select>
+        </div>
+        <div className="mb-4">
           <input
-            type="text"
+            type="number"
             name="phone"
             value={formData.phone}
-            onChange={handleChange}
+            onChange={handleInputChange}
+            placeholder="Number"
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
             required
-            className="w-full bg-custom-light-gray text-black p-2 border rounded"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black">Email:</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            type="text"
+            name="medicalCondition"
+            value={formData.medicalCondition}
+            onChange={handleInputChange}
+            placeholder="Medical Condition"
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
             required
-            className="w-full bg-custom-light-gray text-black p-2 border rounded"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black">Subscription Date:</label>
           <input
             type="date"
             name="subscriptionDate"
             value={formData.subscriptionDate}
-            onChange={handleChange}
+            onChange={handleInputChange}
+            className="w-full bg-gray-200 text-black text-base p-2 border rounded"
             required
-            className="w-full bg-custom-light-gray text-black p-2 border rounded"
           />
         </div>
-
         <button
           type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
         >
           Add User
         </button>
       </form>
-     
 
       <button
-        className="bg-blue-600 text-white px-3 py-2 my-5 rounded"
+        className="w-full bg-blue-600 text-white py-2 my-5 rounded hover:bg-blue-700 transition duration-200"
         onClick={checkUserList}
       >
         Check Users List

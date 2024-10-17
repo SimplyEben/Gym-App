@@ -1,7 +1,7 @@
-// import axios from "axios";
 import { useState, useEffect } from "react";
-//  import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { IoIosPersonAdd } from "react-icons/io";
+// import axios from "axios";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -16,10 +16,10 @@ function UserList() {
       redirect: "follow",
     };
 
-     fetch("http://localhost:8899/users", requestOptions)
+    fetch("http://localhost:8899/users", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
+        console.log(result);
         setUsers(result);
       })
       .catch((error) => console.error(error));
@@ -41,37 +41,67 @@ function UserList() {
   };
 
   const handleRenew = (user) => {
+    console.log("going into renew", "id: ", user.id);
     navigate(`/renew-page/${user.id}`, { state: { user } });
-    // navigate(`/renew-page/:userId`, { state: { user } });
   };
 
   return (
-    <div className="max-w-5xl ml-5 mt-5 p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-semibold text-black mb-6">User List</h1>
+    <div className="container mx-auto mt-5 md:mt-10 p-4 bg-white shadow-md rounded-lg">
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-semibold text-black mb-6">Users</h1>
+        <button
+          className="bg-blue-600 text-white px-3 py-2 my-5 rounded"
+          onClick={goToAddUser}
+        >
+          <IoIosPersonAdd />
+        </button>
+      </div>
       <table className="w-full text-black table-auto">
         <thead>
           <tr>
-            <th className="px-4 py-2 border">ID</th>
-            <th className="px-4 py-2 border">First Name</th>
-            <th className="px-4 py-2 border">Last Name</th>
-            <th className="px-4 py-2 border">Phone</th>
-            <th className="px-4 py-2 border">Email</th>
-            <th className="px-4 py-2 border">Subscription Date</th>
-            <th className="px-4 py-2 border">Status</th>
-            <th className="px-4 py-2 border">Action</th>
+            {/* <th className="px-4 py-2 border">ID</th> */}
+            <th className="px-4 py-2 text-sm md:text-xl border">Name</th>
+            <th className="px-4 py-2 text-sm md:text-xl border hidden sm:table-cell">
+              Address
+            </th>
+            <th className="px-4 py-2 text-sm md:text-xl border hidden sm:table-cell">
+              Purpose
+            </th>
+            <th className="px-4 py-2 text-sm md:text-xl border">Number</th>
+            <th className="px-4 py-2 text-sm md:text-xl border hidden sm:table-cell">
+              Medical Condition
+            </th>
+            <th className="px-4 py-2 text-sm md:text-xl border hidden sm:table-cell">
+              Subscription Date
+            </th>
+            <th className="px-4 py-2 text-sm md:text-xl border hidden sm:table-cell">
+              Status
+            </th>
+            <th className="px-4 py-2 text-sm md:text-xl border">Action</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
             <tr key={index} className="text-center">
-              <td className="px-4 py-2 border">{user.id}</td>
-              <td className="px-4 py-2 border">{user.firstname}</td>
-              <td className="px-4 py-2 border">{user.lastname}</td>
-              <td className="px-4 py-2 border">{user.phone}</td>
-              <td className="px-4 py-2 border">{user.email}</td>
-              <td className="px-4 py-2 border">{user.subscriptionDate}</td>
+              {/* <td className="px-4 py-2 border">{user.id}</td> */}
+              <td className="px-4 py-2 text-sm md:text-xl border">
+                {user.name}
+              </td>
+              <td className="px-4 py-2 border hidden sm:table-cell">
+                {user.address}
+              </td>
+              <td className="px-4 py-2 border hidden sm:table-cell">
+                {user.purpose}
+              </td>
+              <td className="px-4 py-2 border ">{user.phone}</td>
+              <td className="px-4 py-2 border hidden sm:table-cell">
+                {user.medicalCondition}
+              </td>
+              <td className="px-4 py-2 border hidden sm:table-cell">
+                {user.subscriptionDate}
+              </td>
               <td
-                className={`px-4 py-2 border ${
+                className={`px-4 py-2 text-sm md:text-xl border hidden sm:table-cell ${
                   checkExpiry(user.subscriptionDate)
                     ? "text-red-500"
                     : "text-green-500"
@@ -79,20 +109,15 @@ function UserList() {
               >
                 {checkExpiry(user.subscriptionDate) ? "Expired" : "Active"}
               </td>
-              <td className="px-4 py-2 border">
+              <td className="px-4 py-2 text-sm md:text-xl border">
                 {checkExpiry(user.subscriptionDate) ? (
                   <button
                     onClick={() => handleRenew(user)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    className="bg-blue-500 text-white px-2 md:px-4 py-1 md:py-2 rounded-lg"
                   >
                     Renew
                   </button>
                 ) : (
-                  // <Link to={`/renew-page/${user.id}`}
-                  //   className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                  // >
-                  //   Renew
-                  // </Link>
                   <span className="text-gray-500">Active</span>
                 )}
               </td>
@@ -100,12 +125,6 @@ function UserList() {
           ))}
         </tbody>
       </table>
-      <button
-        className="bg-blue-600 text-white px-3 py-2 my-5 rounded"
-        onClick={goToAddUser}
-      >
-        Add New User
-      </button>
     </div>
   );
 }

@@ -13,12 +13,12 @@ import RenewPage from './Components/RenewPage'
 function App() {
   const routes = createBrowserRouter([
     {
-      path: "/signup",
-      element: <SignUp />,
+      path: "/",
+      element: <Login />,
     },
     {
-      path: "/login",
-      element: <Login />,
+      path: "/signup",
+      element: <SignUp />,
     },
     {
       path: "/renew-page/:userId",
@@ -39,7 +39,7 @@ function App() {
           element: <UserList/> 
         },
         { 
-          path: "dashboard", 
+          path: "", 
           element: <Dashboard/>
         },
         { 
@@ -55,7 +55,7 @@ function App() {
   ]);
 
   return (
-    <div className="App">
+    <div className="App ">
         <RouterProvider router={routes} />
       
     </div>

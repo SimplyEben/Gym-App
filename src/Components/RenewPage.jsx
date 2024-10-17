@@ -6,14 +6,18 @@ function RenewPage() {
   const { id } = useParams();
   const [info, setInfo] = useState({
     id: id,
-    firstName: "",
-    lastName: "",
+    name: "",
     phone: "",
-    email: "",
     subscriptionDate: "",
     newSubscriptionDate: "",
-    amount: "",
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = location.state.user;
+  console.log("gotten user", user);
+
+  
 
   useEffect(() => {
     axios
@@ -21,113 +25,110 @@ function RenewPage() {
       .then((res) => {
         setInfo({
           ...info,
-          firstName: res.data.firstName,
-          lastName: res.data.lastName,
+          name: res.data.name,
           phone: res.data.phone,
-          email: res.data.email,
           subscriptionDate: res.data.subscriptionDate,
+          newSubscriptionDate: "",
         });
       })
       .catch((err) => console.log(err));
   }, [id]);
 
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  console.log("user details", location.state.user);
-  const user = location.state.user;
+  const handleInput = (event) => {
+    setInfo({
+      ...info,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("id", user.id, "info", user);
     axios
-      .put("http://localhost:8899/users/" + id, info)
+      .put("http://localhost:8899/users/" + user.id, {
+        ...user,
+        subscriptionDate: info.newSubscriptionDate,
+      })
       .then((response) => {
+        console.log("My data", response);
         setInfo({
-          ...info,
-          newSubscriptionDate: response.data.newSubscriptionDate,
-          amount: response.data.amount,
+          ...user,
+          subscriptionDate: response.data.newSubscriptionDate,
         });
-        navigate("/user-list");
+        navigate("/home-page/user-list");
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-black mb-4">
+    <div className="container mx-auto p-4">
+      <h2 className="text-xl font-semibold text-black mb-4 text-center">
         Renew Subscription
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="max-w-md mx-auto mt-10 p-6 gap-y-5 bg-white shadow-md rounded-lg">
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col gap-y-2">
+            <label className="text-left font-semibold">Name:</label>
             <input
               type="text"
-              name="firstName"
-              value={`${user.firstname} ${user.lastname}`}
-              placeholder="First Name"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
+              name="name"
+              value={user.name}
+              placeholder="Name"
+              className="bg-custom-light-gray text-black text-base p-2 border rounded w-full"
               readOnly
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col gap-y-2">
+            <label className="text-left font-semibold">Phone:</label>
             <input
               type="number"
               name="phone"
               value={user.phone}
               placeholder="Phone"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
+              className="bg-custom-light-gray text-black text-base p-2 border rounded w-full"
               readOnly
             />
           </div>
-
-          <div className="mb-4">
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              placeholder="Phone"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
-              readOnly
-            />
-          </div>
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col gap-y-2">
+            <label className="text-left font-semibold">
+              Last Subscription Date:
+            </label>
             <input
               type="date"
               name="subscription"
               value={user.subscriptionDate}
-              placeholder="Email"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
+              className="bg-custom-light-gray text-black text-base p-2 border rounded w-full"
               readOnly
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col gap-y-2">
+            <label className="text-left font-semibold">
+              New Subscription Date:
+            </label>
             <input
               type="date"
               name="newSubscriptionDate"
               value={info.newSubscriptionDate}
-              onChange={(e) =>
-                setInfo({ ...info, newSubscriptionDate: e.target.value })
-              }
-              placeholder="Subscription Date"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
+              onChange={handleInput}
+              placeholder="New Subscription Date"
+              className="bg-custom-light-gray text-black text-base p-2 border rounded w-full"
               required
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <input
               type="number"
               name="amount"
               value={info.amount}
-              onChange={(e) => setInfo({ ...info, amount: e.target.value })}
+              onChange={handleInput}
               placeholder="Amount"
-              className="bg-custom-light-gray text-black text-base p-2 border rounded"
+              className="bg-custom-light-gray text-black text-base p-2 border rounded w-full"
               required
             />
-          </div>
-
+          </div> */}
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
           >
             Renew
           </button>
